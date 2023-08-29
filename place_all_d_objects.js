@@ -74,7 +74,8 @@ const placeAllDObjects = tiled.registerAction("Place All D' objects", function (
 placeAllDObjects.text = "Place All D' objects"
 placeAllDObjects.icon = "pado.png"
 
-tiled.extendMenu("Edit", [
-    { action: "Place All D' objects", before: "SelectAll" },
+tiled.extendMenu("Map", [
+    { separator: true },
+    { action: "Place All D' objects", before: "AutoMap" },
     { separator: true }
 ]);
