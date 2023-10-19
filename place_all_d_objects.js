@@ -82,6 +82,10 @@ Second - make sure that you are running the script on a map that is already save
 
         arrayOfStrings = arrayOfStrings.slice(13/*from 13 line to the end of the array*/);
 
+        if (tiled.confirm("Do you want objects to be sorted in alphabetical order .\n(Chose \"No\" to keep original object list order)", "Sort ?")) {
+            arrayOfStrings.sort();
+        }
+
         arrayOfStrings.forEach(function (type, index, array) {
 
             let current_object;
