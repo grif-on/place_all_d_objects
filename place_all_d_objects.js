@@ -184,10 +184,19 @@ Second - make sure that you are running the script on a map that is already save
                     current_object.setProperty("_note_02_", "Unpredictable behaviour when spawned or destroyed .");
                     break;
 
-                //Harcoded cinematics
+                //Actually usefull harcoded cinematics
+
+                case "obj_gamelogo":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "You can actually use it , it's OFF only for convinience .");
+                    current_object.setProperty("_note_02_", "After appearing on level this object will trigger splash screen cutscene and destroy itself .");
+                    current_object.setProperty("_note_03_", "You can set your own custom splash screen with \"logo.jpg\" in your custommap resourceses folder .");
+                    current_object.setProperty("_note_04_", "(i.e. if your map named \"example_map.tmj\" then create near it \"example_map\" folder and place \"logo.jpg\" in this folder)");
+                    break;
+
+                // Useless harcoded cinematics
 
                 case "obj_cutscene_logo":
-                case "obj_gamelogo":
                 case "obj_disclaimer":
                     current_object.type = "!!!OFF!!!" + type;
                     current_object.setProperty("_note_01_", "Hardcoded cinematic .");
