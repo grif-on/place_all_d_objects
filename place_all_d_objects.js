@@ -100,6 +100,15 @@ Second - make sure that you are running the script on a map that is already save
                 case "obj_wall":
                 case "obj_halfwall":
                 case "obj_voidwall":
+                case "obj_material_bog":
+                case "obj_material_carpet":
+                case "obj_material_concrete":
+                case "obj_material_grass":
+                case "obj_material_lattice":
+                case "obj_material_metal":
+                case "obj_material_rubber":
+                case "obj_material_snow":
+                case "obj_material_wood":
                     current_object = new MapObject(MapObject.Rectangle);
                     current_object.height = 32;
                     current_object.width = 32;
