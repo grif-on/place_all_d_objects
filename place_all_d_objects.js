@@ -80,12 +80,319 @@ Second - make sure that you are running the script on a map that is already save
         textFileWithObjectTypes.close();
         layerOfAllObjects.setProperty("All objects from game version", arrayOfStrings[0]);
 
+        arrayOfStrings = arrayOfStrings.slice(13/*from 13 line to the end of the array*/);
+
         arrayOfStrings.forEach(function (type, index, array) {
 
-            let current_object = new MapObject(MapObject.Point);
-            current_object.type = type;
+            let current_object;
+            switch (type) {
+
+                //Always rectangles
+
+                case "obj_doorwall":
+                case "obj_cyclerwall":
+                case "obj_cyclerwall_solid":
+                case "ent_forceload_area":
+                case "ent_forceload_type":
+                case "ent_trigger":
+                case "obj_trigger_secret":
+                case "obj_checkbox":
+                case "obj_wall":
+                case "obj_halfwall":
+                case "obj_voidwall":
+                    current_object = new MapObject(MapObject.Rectangle);
+                    current_object.height = 32;
+                    current_object.width = 32;
+                    break;
+
+                //Usually points
+
+                default:
+                    current_object = new MapObject(MapObject.Point);
+                    break;
+            }
+
             current_object.x = currentX;
             current_object.y = currentY;
+
+            switch (type) {
+
+                //Adjusting (overriding) properties
+
+                case "obj_buttonLanguage_BY":
+                case "obj_buttonLanguage_CN":
+                case "obj_buttonLanguage_CZ":
+                case "obj_buttonLanguage_DE":
+                case "obj_buttonLanguage_ES":
+                case "obj_buttonLanguage_FR":
+                case "obj_buttonLanguage_GB":
+                case "obj_buttonLanguage_HG":
+                case "obj_buttonLanguage_PL":
+                case "obj_buttonLanguage_RU":
+                case "obj_buttonLanguage_TW":
+                case "obj_buttonLanguage_UA":
+                case "obj_patreon_button":
+                case "obj_discord_button":
+                    current_object.type = type;
+                    current_object.setProperty("image_xscale", 0.1);
+                    current_object.setProperty("image_yscale", 0.1);
+                    break;
+                case "obj_nightmarishMass":
+                    current_object.type = type;
+                    current_object.setProperty("goBack", true);
+                    break;
+
+                //Game cores
+
+                case "obj_gamecontroller":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "MAIN GAME CORE");
+                    current_object.setProperty("_note_02_", "Do not spawn or destroy !");
+                    break;
+                case "obj_controller":
+                case "obj_FightSystem":
+                case "obj_scriptedSequence":
+                case "obj_dev_controller_bot":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Secondary game core .");
+                    current_object.setProperty("_note_02_", "Do not spawn or destroy !");
+                    break;
+                case "obj_Cursor":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Just a singleton .");
+                    current_object.setProperty("_note_02_", "Unpredictable behaviour when spawned or destroyed .");
+                    break;
+
+                //Game menus
+
+                case "obj_saveMenu":
+                case "obj_workshop":
+                case "obj_workshop_button":
+                case "obj_Menu":
+                case "obj_pause":
+                case "obj_dev_gameconsole":
+                case "obj_helpmenu":
+                case "obj_totalstats":
+                case "obj_langbutton":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Game menu .");
+                    current_object.setProperty("_note_02_", "Unpredictable behaviour when spawned or destroyed .");
+                    break;
+                case "obj_langbuttonMenu": //todo - перепроверить
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Game menu .");
+                    current_object.setProperty("_note_02_", "Unpredictable behaviour when spawned or destroyed .");
+                    break;
+
+                //Harcoded cinematics
+
+                case "obj_cutscene_logo":
+                case "obj_gamelogo":
+                case "obj_disclaimer":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Hardcoded cinematic .");
+                    current_object.setProperty("_note_02_", "For animation it is recomended to use ent_cinematic and ent_sound instead .");
+                    break;
+                case "obj_levelStats":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Hardcoded cinematic .");
+                    current_object.setProperty("_note_02_", "For animation it is recomended to use ent_cinematic and ent_sound instead .");
+                    current_object.setProperty("_note_03_", "You should use \"arcade_finish\" global variable to properly finish level !");
+                    break;
+                case "obj_deathScreen":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Hardcoded cinematic .");
+                    current_object.setProperty("_note_02_", "For animation it is recomended to use ent_cinematic and ent_sound instead .");
+                    current_object.setProperty("_note_03_", "You should use \"ent_hurt\" to properly kill player !");
+                    break;
+                case "obj_rip":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Hardcoded necrolog .");
+                    current_object.setProperty("_note_02_", "Please don't use it .");
+                    break;
+
+                //Parents
+
+                case "obj_NPC":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object of all NPCs .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all NPCs .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+                case "obj_enemy_base":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object for all enemies and NPCs .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all NPCs .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+                case "obj_enemy":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object for common ground and flying enemies .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all common ground and flying enemies .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+                case "obj_enemy_walking":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object for common ground only enemies .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all common ground only enemies .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+                case "obj_enemy_flying":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object for common flying only enemies .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all common flying only enemies .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+                case "obj_languageButtons":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object of all languge buttons .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all language buttons .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+                case "obj_window":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object of all classical windows .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all classical windows .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+                case "obj_dev_lamps":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object of all classical light sources .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all classical light sources .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+                case "obj_dev_materials":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object of all materials .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all materials .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+                case "obj_illusionary":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object of all classical illusionary .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all classical illusionary .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+                case "obj_cycler":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object of all classical cyclers .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all classical cyclers .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+                case "obj_interact":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object of all classical interacts .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all classical interacts .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+                case "obj_world":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object of all objects that are take place in pathfinding .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all objects that are take place in pathfinding .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+                case "obj_projectile":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object of all player and all enemies projectiles .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all player and all enemies projectiles .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+                case "obj_enemyProjectile":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object of all enemies projectiles .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all enemies projectiles .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+                case "obj_weaponProjectile":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object of all (mellee and ranged) player projectiles .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all (mellee and ranged) player projectiles .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+                case "obj_rangedProjectile":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object of all ranged player projectiles (except obj_Shaft).");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all ranged player projectiles (except obj_Shaft).");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    current_object.setProperty("_note_06_", "obj_Shaft is excluded due to his different behavior (unlike obj_rangedProjectile , obj_Shaft can pass through some objects) .");
+                    break;
+                case "obj_meleeProjectile":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object of all melee player projectiles .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all melee player projectiles .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+                case "obj_entity":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Abstract parent object of all entitites .");
+                    current_object.setProperty("_note_02_", "Do not spawn !");
+                    current_object.setProperty("_note_03_", "it's an \"abstract class\" .");
+                    current_object.setProperty("_note_04_", "Usefull only for sorting(selecting) all entities (this is what !Entity are represent) .");
+                    current_object.setProperty("_note_05_", "You can use command \"parent list\" to generate \"autogenerated_hierarchy_list.txt\" .");
+                    break;
+
+                //Misc
+
+                case "_entiline_path":
+                case "_entiline_programmation":
+                case "_entiline_manipulation":
+                case "_entiline_activation":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "Ancillary object .");
+                    current_object.setProperty("_note_02_", "In game selfdeletes after creation .");
+                    current_object.setProperty("_note_03_", "Only needed to suppress custommap loader false-positive errors .");
+                    break;
+
+                //"just because"
+
+                case "obj_monster_lantern":
+                    current_object.type = "!!!OFF!!!" + type;
+                    current_object.setProperty("_note_01_", "OFF just because any lanter on \"level start\" automatically enables \"dark lightmap\" for level (i.e. global value level_lantern = true) .");
+                    break;
+
+                //ALL OTHERS
+
+                default:
+                    current_object.type = type;
+                    break;
+            }
+
             //current_object.name = name;
             layerOfAllObjects.addObject(current_object);
 
