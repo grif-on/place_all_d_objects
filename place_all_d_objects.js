@@ -416,6 +416,10 @@ Second - make sure that you are running the script on a map that is already save
 
     });
 
+    if (tiled.confirm("Would you also like to execute a \"Convert types from DEV to PRETTY\" action ?\n(Recomended is \"Yes\")\nIf you chose \"No\" then you can always run it manually from \"Map\" menu .", "Prettify ?")) {
+        tiled.trigger("devToPretty");
+    }
+
 })
 
 placeAllDObjects.text = "Place All D' objects"
