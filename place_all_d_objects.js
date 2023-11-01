@@ -117,17 +117,17 @@ Second - make sure that you are running the script on a map that is already save
                     current_object.height = 32;
                     current_object.width = 32;
                     current_object.x = currentX - 16;
+                    current_object.y = currentY - 16;
                     break;
 
                 //Usually points
 
                 default:
                     current_object = new MapObject(MapObject.Point);
+                    current_object.x = currentX;
+                    current_object.y = currentY;
                     break;
             }
-
-            current_object.x = currentX;
-            current_object.y = currentY;
 
             switch (type) {
 
