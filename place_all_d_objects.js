@@ -113,6 +113,7 @@ Second - make sure that you are running the script on a map that is already save
                 case "obj_material_rubber":
                 case "obj_material_snow":
                 case "obj_material_wood":
+                case "obj_trigger_push":
                     current_object = new MapObject(MapObject.Rectangle);
                     current_object.height = 32;
                     current_object.width = 32;
@@ -154,6 +155,14 @@ Second - make sure that you are running the script on a map that is already save
                 case "obj_nightmarishMass":
                     current_object.type = type;
                     current_object.setProperty("goBack", true);
+                    break;
+                case "obj_trigger_push":
+                    current_object.type = type;
+                    current_object.setProperty("_note_01_", "Steammachine conveyor belt");
+                    current_object.setProperty("_note_02_", "push_direction can be int from 0 to 3");
+                    current_object.setProperty("_note_03_", "push_speed can be any float value");
+                    current_object.setProperty("push_direction", 3);
+                    current_object.setProperty("push_speed", 1.5);
                     break;
 
                 //Game cores
