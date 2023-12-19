@@ -147,6 +147,7 @@ Second - make sure that you are running the script on a map that is already save
                 case "obj_buttonLanguage_RU":
                 case "obj_buttonLanguage_TW":
                 case "obj_buttonLanguage_UA":
+                case "obj_buttonLanguage_NO":
                 case "obj_patreon_button":
                 case "obj_discord_button":
                     current_object.type = type;
