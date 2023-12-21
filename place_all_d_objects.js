@@ -116,6 +116,7 @@ Second - make sure that you are running the script on a map that is already save
                 case "obj_material_wood":
                 case "obj_trigger_push":
                 case "obj_map_pointer_zone":
+                case "obj_trigger_autosave":
                     current_object = new MapObject(MapObject.Rectangle);
                     current_object.height = 32;
                     current_object.width = 32;
