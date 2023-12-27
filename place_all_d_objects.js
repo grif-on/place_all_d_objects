@@ -97,7 +97,6 @@ Second - make sure that you are running the script on a map that is already save
                 case "obj_cyclerwall":
                 case "obj_cyclerwall_solid":
                 case "ent_forceload_area":
-                case "ent_forceload_type":
                 case "ent_secret":
                 case "ent_trigger":
                 case "obj_trigger_secret":
