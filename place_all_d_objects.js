@@ -155,9 +155,11 @@ Second - make sure that you are running the script on a map that is already save
                     current_object.setProperty("image_xscale", 0.1);
                     current_object.setProperty("image_yscale", 0.1);
                     break;
-                case "obj_nightmarishMass":
+                case "obj_mass":
                     current_object.type = type;
-                    current_object.setProperty("goBack", true);
+                    current_object.setProperty("maximum_size", 3);
+                    current_object.setProperty("minimum_size", 0.001);
+                    current_object.setProperty("shrinking", false);
                     break;
                 case "obj_trigger_push":
                     current_object.type = type;
