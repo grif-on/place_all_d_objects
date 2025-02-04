@@ -230,7 +230,7 @@ Second - make sure that you are running the script on a map that is already save
                     current_object.setProperty("_note_01_", "Hardcoded cinematic .");
                     current_object.setProperty("_note_02_", "For animation it is recomended to use ent_cinematic and ent_sound instead .");
                     break;
-                case "obj_levelStats":
+                case "obj_level_end":
                     current_object.type = "!!!OFF!!!" + type;
                     current_object.setProperty("_note_01_", "Hardcoded cinematic .");
                     current_object.setProperty("_note_02_", "For animation it is recomended to use ent_cinematic and ent_sound instead .");
