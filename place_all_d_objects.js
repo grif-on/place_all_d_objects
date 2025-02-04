@@ -169,6 +169,19 @@ Second - make sure that you are running the script on a map that is already save
                     current_object.setProperty("push_direction", 3);
                     current_object.setProperty("push_speed", 1.5);
                     break;
+                case "obj_Teleball":
+                    current_object.setProperty("teleball_timer", -999999999); // keep teleball alive infinitely
+                case "obj_NightmarishHook":
+                case "obj_NightmarishPike":
+                case "obj_Slime":
+                case "obj_SlimeNightmare":
+                case "obj_wraithPike":
+                case "obj_Shaft":
+                case "obj_Fireball":
+                case "obj_Plasmaball":
+                    current_object.type = type;
+                    current_object.setProperty("spd", 0);
+                    break;
 
                 //Game cores
 
